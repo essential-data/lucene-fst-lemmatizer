@@ -1,5 +1,5 @@
-Slovenská podpora pre ElasticSearch
-===================================
+Slovenská podpora pre Lucene/SOLR + command-line lemmatizátor
+=============================================================
 
 Autorské práva
 --------------
