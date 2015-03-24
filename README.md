@@ -51,6 +51,17 @@ Najjednoduchší spôsob skompilovania je pomocou
 mvn package
 ```
 
+Vytvorenie FST súboru
+---------------------
+
+Ak chcete vytvoriť FST súbor nanovo, použite:
+
+```
+wget -O - 'http://korpus.sk/attachments/morphology_database/ma-2015-02-05.txt.xz' | xzcat > morph-sk.txt
+java -cp target/lucene-fst-lemmatizer-0.3.2-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder morph-sk.txt slovaklemma.fst
+java -cp target/lucene-fst-lemmatizer-0.3.2-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder morph-sk.txt slovaklemma_ascii.fst --ascii
+```
+
 Odkazy
 ------
 
