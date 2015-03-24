@@ -12,7 +12,7 @@
 
   <groupId>sk.essentialdata</groupId>
   <artifactId>lucene-fst-lemmatizer</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
 
   <dependencies>
     <dependency>
@@ -86,7 +86,7 @@
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
-              <finalName>fstutils-0.3.1</finalName>
+              <finalName>fstutils-0.3.2</finalName>
             </configuration>
             <phase>package</phase>
             <goals>

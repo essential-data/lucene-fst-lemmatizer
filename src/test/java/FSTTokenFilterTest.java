@@ -24,20 +24,17 @@ public class FSTTokenFilterTest {
 
     @Test
     public void testThroughput() throws IOException {
-        String documentFileNameBase = "wordings_";
-        for (int i = 10; i <= 10000000; i*=10) {
-            String documentFileName = documentFileNameBase + i + ".txt";
-            long startTime = System.currentTimeMillis();
-            timedThroughput(documentFileName);
-            long stopTime = System.currentTimeMillis();
-            long elapsedTime = stopTime - startTime;
-            System.out.println("Elapsed time: " + elapsedTime);
-        }
+        String documentFileName = "src/test/resources/wikipedia_sample.txt";
+        long startTime = System.currentTimeMillis();
+        timedThroughput(documentFileName);
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Elapsed time: " + elapsedTime);
     }
 
 
     public void timedThroughput(String documentFileName) throws IOException {
-        String fstFileName = "slovaklemma.fst";
+        String fstFileName = "fst/slovaklemma.fst";
 
         File fstFile = new File(fstFileName);
         FST<CharsRef> fst = FST.read(fstFile, CharSequenceOutputs.getSingleton());
@@ -64,7 +61,7 @@ public class FSTTokenFilterTest {
 
     @Test
     public void testVlastMaterial() throws IOException {
-        String fstFileName = "slovaklemma_ascii.fst";
+        String fstFileName = "fst/slovaklemma_ascii.fst";
         File fstFile = new File(fstFileName);
         FST<CharsRef> fst = FST.read(fstFile, CharSequenceOutputs.getSingleton());
 
