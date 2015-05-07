@@ -18,7 +18,7 @@ public class FSTUtils {
             boolean echo = (args.length >=3 && "-e".equals(args[2]));
             try {
                 File file = new File(args[1]);
-                FST<CharsRef> fst = FST.read(file, CharSequenceOutputs.getSingleton());
+                FST<CharsRef> fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 StreamTokenizer st = new StreamTokenizer(br);

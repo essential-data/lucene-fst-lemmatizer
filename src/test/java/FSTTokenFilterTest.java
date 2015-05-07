@@ -37,7 +37,7 @@ public class FSTTokenFilterTest {
         String fstFileName = "fst/slovaklemma.fst";
 
         File fstFile = new File(fstFileName);
-        FST<CharsRef> fst = FST.read(fstFile, CharSequenceOutputs.getSingleton());
+        FST<CharsRef> fst = FST.read(fstFile.toPath(), CharSequenceOutputs.getSingleton());
 
         File documentFile = new File(documentFileName);
 
@@ -63,7 +63,7 @@ public class FSTTokenFilterTest {
     public void testVlastMaterial() throws IOException {
         String fstFileName = "fst/slovaklemma_ascii.fst";
         File fstFile = new File(fstFileName);
-        FST<CharsRef> fst = FST.read(fstFile, CharSequenceOutputs.getSingleton());
+        FST<CharsRef> fst = FST.read(fstFile.toPath(), CharSequenceOutputs.getSingleton());
 
         String material[] = new String[] {"cislo", "predpisu", "doplna"};
         Set<String> index = new HashSet<String>();

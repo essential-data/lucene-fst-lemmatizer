@@ -3,7 +3,7 @@ package sk.essentialdata.lucene.analysis.fst;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.CharsRef;
-import org.apache.lucene.util.IntsRef;
+import org.apache.lucene.util.IntsRefBuilder;
 import org.apache.lucene.util.fst.Builder;
 import org.apache.lucene.util.fst.CharSequenceOutputs;
 import org.apache.lucene.util.fst.FST;
@@ -59,7 +59,7 @@ public class FSTBuilder {
         builder.save(outputFilePath);
 
         File file = new File(outputFilePath);
-        FST<CharsRef> fst = FST.read(file, CharSequenceOutputs.getSingleton());
+        FST<CharsRef> fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
 
         System.out.println("Sanity check: dimorphic word, words with asterisk(inflected only|lemma only|both)"); // sorry, the last is the only word with two asterisks
         for (String s : Arrays.asList("najprudší", "najprudkejší", "neni", "chujovinami", "piči")) {
@@ -158,18 +158,16 @@ public class FSTBuilder {
     protected void buildFSTFromDict() throws IOException {
         CharSequenceOutputs charSequenceOutputs = CharSequenceOutputs.getSingleton();
         Builder<CharsRef> builder = new Builder<CharsRef>(FST.INPUT_TYPE.BYTE1, charSequenceOutputs);
-        BytesRef scratchBytes = new BytesRef();
-        IntsRef scratchInts = new IntsRef();
+        IntsRefBuilder intsRefBuilder = new IntsRefBuilder();
         for (Map.Entry<String, String> entry : dict.entrySet()) {
-            scratchBytes.copyChars(entry.getKey());
-            builder.add(Util.toIntsRef(scratchBytes, scratchInts), new CharsRef(entry.getValue()));
+            builder.add(Util.toIntsRef(new BytesRef(entry.getKey()), intsRefBuilder), new CharsRef(entry.getValue()));
         }
         fst = builder.finish();
     }
 
     public void save(String pathname) throws IOException {
         File file = new File(pathname);
-        fst.save(file);
+        fst.save(file.toPath());
     }
 
     /**

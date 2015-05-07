@@ -54,7 +54,6 @@ public class FSTTokenFilterFactory extends TokenFilterFactory implements Resourc
 
     @Override
     public void inform(ResourceLoader loader) throws IOException {
-        assureMatchVersion();
         String dictionaryArg = getOriginalArgs().get(PARAM_DICTIONARY);
         if (dictionaryArg == null) {
             throw new IllegalArgumentException("Parameter " + PARAM_DICTIONARY + " is mandatory.");

@@ -48,7 +48,7 @@ public class FSTTokenFilter extends TokenFilter {
     protected FSTTokenFilter(TokenStream input, String fstFileName) throws IOException {
         super(input);
         File file = new File(fstFileName);
-        fst = FST.read(file, CharSequenceOutputs.getSingleton());
+        fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
     }
 
     /**
@@ -171,7 +171,7 @@ public class FSTTokenFilter extends TokenFilter {
             System.exit(1);
         }
         File file = new File(args[0]);
-        FST<CharsRef> fst = FST.read(file, CharSequenceOutputs.getSingleton());
+        FST<CharsRef> fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
 
         for (String s : Arrays.asList("najprudší", "najprudkejší", "neni", "chujovinami", "piči", "mám")) {
             System.out.println(utilGetDebug(fst, new BytesRef(s)));
