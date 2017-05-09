@@ -9,22 +9,12 @@ import org.apache.lucene.analysis.util.TokenFilterFactory;
 
 /**
  * TokenFilterFactory that creates instances of {@link sk.essentialdata.lucene.analysis.fst.FSTTokenFilter}.
- * Example config for British English including a custom dictionary, case insensitive matching:
+ * Example config for Slovak including a custom dictionary:
  * <pre class="prettyprint" >
- * &lt;filter class=&quot;solr.HunspellStemFilterFactory&quot;
- *    dictionary=&quot;en_GB&quot;
- *    affix=&quot;en_GB.aff&quot;
- *    ignoreCase=&quot;true&quot; /&gt;</pre>
- * Both parameters dictionary and affix are mandatory.
- * <br/>
- * The parameter ignoreCase (true/false) controls whether matching is case sensitive or not. Default false.
- * <br/>
- * The parameter strictAffixParsing (true/false) controls whether the affix parsing is strict or not. Default true.
- * If strict an error while reading an affix rule causes a ParseException, otherwise is ignored.
- * <br/>
- * Dictionaries for many languages are available through the OpenOffice project.
+ * &lt;filter class=&quot;sk.essentialdata.lucene.analysis.fst.FSTTokenFilterFactory&quot;
+ *    fst=&quot;lib/slovaklemma.fst&quot;</pre>
  *
- * See <a href="http://wiki.apache.org/solr/Hunspell">http://wiki.apache.org/solr/Hunspell</a>
+ * See <a href="https://github.com/essential-data/lucene-fst-lemmatizer">https://github.com/essential-data/lucene-fst-lemmatizer</a>
  *
  * @author miso
  * @date 4/30/14.

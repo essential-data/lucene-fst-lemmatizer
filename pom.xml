@@ -5,14 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <lucene.version>5.1.0</lucene.version>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
+    <lucene.version>6.4.1</lucene.version>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <groupId>sk.essentialdata</groupId>
   <artifactId>lucene-fst-lemmatizer</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
 
   <dependencies>
     <dependency>
@@ -86,7 +86,7 @@
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
-              <finalName>fstutils-0.4.0</finalName>
+              <finalName>fstutils-0.5.0</finalName>
             </configuration>
             <phase>package</phase>
             <goals>
