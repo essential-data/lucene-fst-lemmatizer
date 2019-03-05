@@ -1,5 +1,16 @@
 package sk.essentialdata.lucene.analysis.fst;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.CharsRef;
@@ -9,10 +20,6 @@ import org.apache.lucene.util.fst.CharSequenceOutputs;
 import org.apache.lucene.util.fst.FST;
 import org.apache.lucene.util.fst.Util;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
 /**
  * Using SortedMap to ensure FST is created in sorted order.
  * @author miso
@@ -20,38 +27,51 @@ import java.util.*;
  */
 public class FSTBuilder {
     private static String LEMMA_DELIMITER = "\t";
-    SortedMap<String, String> dict;
-    FST<CharsRef> fst;
-    Set<String> flags;
+    private SortedMap<String, String> dict = new TreeMap<>();;
+    private FST<CharsRef> fst;
+    private Set<String> flags;
 
     public FSTBuilder() {
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
+        String inputDirPath = null;
         String inputFilePath = null;
         String outputFilePath = null;
         FSTBuilder builder = new FSTBuilder();
-        builder.flags = new HashSet<String>();
+        builder.flags = new HashSet<>();
+        int i = 0;
         for (String arg : args) {
-            if (arg.startsWith("--")) {
-                builder.flags.add(arg.substring(2));
-            } else {
-                if (inputFilePath == null) {
-                    inputFilePath = arg;
-                } else if (outputFilePath == null) {
-                    outputFilePath = arg;
-                }
+          if (arg.startsWith("--")) {
+            builder.flags.add(arg.substring(2));
+          } else {
+            switch (arg) {
+              case "-d":
+                inputDirPath = args[i+1];
+              case "-f":
+                inputFilePath = args[i+1];
+              case "-o":
+                outputFilePath = args[i+1];
             }
+          }
+          i++;
         }
-        if (outputFilePath == null) {
+        if (outputFilePath == null | (inputDirPath == null & inputFilePath == null)) {
             System.out.println("USAGE:");
-            System.out.println("FSTBuilder <dictionary input file path> <FST output file path>");
-            System.out.println("FSTBuilder <dictionary input file path> <FST output file path> --ascii");
+            System.out.println("FSTBuilder -f <dictionary input file path> -o <FST output file path>");
+            System.out.println("FSTBuilder -f <dictionary input file path> -o <FST output file path> --ascii");
+            System.out.println("FSTBuilder -d <dictionary input dir path> -o <FST output file path>");
+            System.out.println("FSTBuilder -d <dictionary input dir path> -o <FST output file path> --ascii");
             System.exit(1);
         }
 
-        System.out.println(String.format("Loading file %s...", inputFilePath));
-        builder.loadFromFile(inputFilePath);
+        if(inputDirPath != null){
+            System.out.println(String.format("Loading files from dir %s...", inputDirPath));
+            builder.loadFromDir(inputDirPath);
+        } else {
+            System.out.println(String.format("Loading file %s", inputFilePath));
+            builder.loadFromFile(inputFilePath);
+        }
         System.out.println("Building FST...");
         System.out.println("(ASCII mode is " + (builder.flags.contains("ascii") ? "on" : "off") + ")");
         builder.buildFSTFromDict();
@@ -62,7 +82,7 @@ public class FSTBuilder {
         FST<CharsRef> fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
 
         System.out.println("Sanity check: dimorphic word, words with asterisk(inflected only|lemma only|both)"); // sorry, the last is the only word with two asterisks
-        for (String s : Arrays.asList("najprudší", "najprudkejší", "neni", "chujovinami", "piči")) {
+        for (String s : Arrays.asList("najprudší", "najprudkejší", "neni", "chujovinami", "piči", "falšovanejšia")) {
             System.out.println(s + " was lemmatized as " + Util.get(fst, new BytesRef(s)));
         }
         for (String s : Arrays.asList("najprudsi", "najprudkejsi", "neni", "chujovinami", "pici")) {
@@ -93,11 +113,10 @@ public class FSTBuilder {
      * @param pathname
      * @throws IOException
      */
-    public void loadFromFile(String pathname) throws IOException {
+    private void loadFromFile(String pathname) throws IOException {
         System.out.println("Loading from file " + pathname);
         File file = new File(pathname);
         Scanner scanner = new Scanner(file);
-        dict = new TreeMap<String, String>();
         int line = 0;
         while (scanner.hasNext()) {
             line++;
@@ -131,12 +150,22 @@ public class FSTBuilder {
         scanner.close();
     }
 
+    private void loadFromDir(String dirPath) throws IOException {
+        Files.list(Paths.get(dirPath)).forEach(path -> {
+            try {
+                loadFromFile(path.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     /**
      * Ignoring duplicates and merging different outputs for the same input.
      * @param input
      * @param output
      */
-    protected void addToDict(String input, String output) {
+    private void addToDict(String input, String output) {
         if (flags.contains("ascii")) {
             input = asciiFold(input);
             output = asciiFold(output);
@@ -155,7 +184,7 @@ public class FSTBuilder {
         }
     }
 
-    protected void buildFSTFromDict() throws IOException {
+    private void buildFSTFromDict() throws IOException {
         CharSequenceOutputs charSequenceOutputs = CharSequenceOutputs.getSingleton();
         Builder<CharsRef> builder = new Builder<CharsRef>(FST.INPUT_TYPE.BYTE1, charSequenceOutputs);
         IntsRefBuilder intsRefBuilder = new IntsRefBuilder();
@@ -187,7 +216,7 @@ public class FSTBuilder {
      * @param string
      * @return
      */
-    protected String asciiFold(String string) {
+    private String asciiFold(String string) {
         char[] output = new char[4*string.length()];
         int length = ASCIIFoldingFilter.foldToASCII(string.toCharArray(), 0, output, 0, string.length());
         return new String(output).substring(0,length);

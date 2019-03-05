@@ -1,13 +1,3 @@
-import org.apache.lucene.util.BytesRef;
-import org.apache.lucene.util.CharsRef;
-import org.apache.lucene.util.fst.CharSequenceOutputs;
-import org.apache.lucene.util.fst.FST;
-import org.apache.lucene.util.fst.Util;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import sk.essentialdata.lucene.analysis.fst.FSTBuilder;
-import sk.essentialdata.lucene.analysis.fst.FSTTokenFilter;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,6 +5,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.lucene.util.BytesRef;
+import org.apache.lucene.util.CharsRef;
+import org.apache.lucene.util.fst.CharSequenceOutputs;
+import org.apache.lucene.util.fst.FST;
+import org.apache.lucene.util.fst.Util;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author miso
