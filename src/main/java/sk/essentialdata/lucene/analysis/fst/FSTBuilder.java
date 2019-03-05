@@ -56,7 +56,7 @@ public class FSTBuilder {
           }
           i++;
         }
-        if (outputFilePath == null | (inputDirPath == null & inputFilePath == null)) {
+        if (outputFilePath == null || (inputDirPath == null && inputFilePath == null)) {
             System.out.println("USAGE:");
             System.out.println("FSTBuilder -f <dictionary input file path> -o <FST output file path>");
             System.out.println("FSTBuilder -f <dictionary input file path> -o <FST output file path> --ascii");
