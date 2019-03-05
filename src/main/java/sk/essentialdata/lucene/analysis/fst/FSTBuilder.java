@@ -81,7 +81,7 @@ public class FSTBuilder {
         File file = new File(outputFilePath);
         FST<CharsRef> fst = FST.read(file.toPath(), CharSequenceOutputs.getSingleton());
 
-        System.out.println("Sanity check: dimorphic word, words with asterisk(inflected only|lemma only|both)"); // sorry, the last is the only word with two asterisks
+         System.out.println("Sanity check: dimorphic word, words with asterisk(inflected only|lemma only|both)"); // sorry, the fifth word is the only word with two asterisks
         for (String s : Arrays.asList("najprudší", "najprudkejší", "neni", "chujovinami", "piči", "falšovanejšia")) {
             System.out.println(s + " was lemmatized as " + Util.get(fst, new BytesRef(s)));
         }
