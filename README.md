@@ -42,8 +42,10 @@ Ak chcete vytvoriť FST súbor nanovo, použite:
 
 ```
 wget -O - 'http://korpus.sk/attachments/morphology_database/ma-2015-02-05.txt.xz' | xzcat > morph-sk.txt
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder morph-sk.txt slovaklemma.fst
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder morph-sk.txt slovaklemma_ascii.fst --ascii
+java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma.fst
+java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma_ascii.fst --ascii
+java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma.fst
+java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma_ascii.fst --ascii
 ```
 
 Použitie - ako lematizátor z príkazového riadku

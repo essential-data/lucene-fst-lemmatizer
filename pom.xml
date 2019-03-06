@@ -5,14 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <lucene.version>6.4.1</lucene.version>
+    <lucene.version>7.7.1</lucene.version>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <groupId>sk.essentialdata</groupId>
   <artifactId>lucene-fst-lemmatizer</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
 
   <dependencies>
     <dependency>
