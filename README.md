@@ -4,7 +4,7 @@ Slovenská podpora pre Lucene/SOLR + command-line lemmatizátor
 Autorské práva
 --------------
 
-Copyright (c) 2015 Essential Data, s.r.o.
+Copyright (c) 2019 Essential Data, s.r.o.
 
 Toto dielo je možné používať v súlade s textami nasledujúcich licencií:
 
@@ -42,10 +42,10 @@ Ak chcete vytvoriť FST súbor nanovo, použite:
 
 ```
 wget -O - 'http://korpus.sk/attachments/morphology_database/ma-2015-02-05.txt.xz' | xzcat > morph-sk.txt
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma.fst
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma_ascii.fst --ascii
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma.fst
-java -cp target/lucene-fst-lemmatizer-0.5.0-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma_ascii.fst --ascii
+java -cp target/lucene-fst-lemmatizer-0.5.1-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma.fst
+java -cp target/lucene-fst-lemmatizer-0.5.1-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -f morph-sk.txt -o slovaklemma_ascii.fst --ascii
+java -cp target/lucene-fst-lemmatizer-0.5.1-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma.fst
+java -cp target/lucene-fst-lemmatizer-0.5.1-jar-with-dependencies.jar sk.essentialdata.lucene.analysis.fst.FSTBuilder -d ../target -o slovaklemma_ascii.fst --ascii
 ```
 
 Použitie - ako lematizátor z príkazového riadku
@@ -54,7 +54,7 @@ Použitie - ako lematizátor z príkazového riadku
 Takto spustíme fstutils:
 
 ```
-java -jar target/fstutils-0.5.0-jar-with-dependencies.jar
+java -jar target/fstutils-0.5.1-jar-with-dependencies.jar
 Usage: fstutils lemmatize <path-to-fst> <options>, where options are:
 -e: echo when a word is not in the dictionary, e.g. 'foo bar' -> 'foo bar'.
 Without the -e option it is 'foo bar' -> 'bar'
@@ -63,14 +63,14 @@ Without the -e option it is 'foo bar' -> 'bar'
 Ak chceme zlematizovať stdin, použitie napr. takto:
 
 ```
-java -jar target/fstutils-0.5.0-jar-with-dependencies.jar lemmatize fst/slovaklemma.fst -e
+java -jar target/fstutils-0.5.1-jar-with-dependencies.jar lemmatize fst/slovaklemma.fst -e
 ```
 
 Tento príkaz dá všetky slová, ktoré má v slovníku do základného tvaru, ostatné len vypíše. 
 
 Použitie v SOLR
 ---------------
-1. Súbory `target/fstutils-0.5.0-jar-with-dependencies.jar` a `fst/slovaklemma.fst` skopírujte o priečinka `instanceDir/lib` (v štandardnej inštalácii SOLR na Linuxe `instanceDir=/var/solr/data/your-core-name/data`)
+1. Súbory `target/fstutils-0.5.1-jar-with-dependencies.jar` a `fst/slovaklemma.fst` skopírujte o priečinka `instanceDir/lib` (v štandardnej inštalácii SOLR na Linuxe `instanceDir=/var/solr/data/your-core-name/data`)
 1. V súbore `instanceDir/conf/schema.xml` v oboch sekciách ``analyzer`` nahraďte riadok
 ```
 <filter class="solr.SnowballPorterFilterFactory" language="English" protected="protwords.txt"/>
@@ -86,3 +86,4 @@ Odkazy
 ------
 
 * [Github spoločnosti Essential Data](https://github.com/essential-data/) - obsahuje naše open-source projekty (aj) pre prácu s jazykom
+* [Zaujímavé odkazy na slovenské NLP](https://github.com/essential-data/nlp-sk-interesting-links) - obsahuje zozbierané odkazy na nástroje a zdroje pre prácu so slovenským jazykom
